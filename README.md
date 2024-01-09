@@ -14,3 +14,10 @@
 - Then go the default URL: "http://127.0.0.1:8000/"
 - Here you will see a Login and Signup Options.
 - Signup for the new User and then try logging in.
+
+# Authentication
+- I have used the basic authenication provided by the django. However we can also implement the
+  other authentication mechanisms (tokens).
+
+# Pagination
+- Pagination is done by using the default pagination provided by the generics.
