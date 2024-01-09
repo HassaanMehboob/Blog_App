@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ object.title }}</h2>
+  <p>{{ object.content }}</p>
+  <p>Published on: {{ object.pub_date }}</p>
+  {% if object.image %}
+    <img src="{{ object.image.url }}" alt="{{ object.title }}">
+  {% endif %}
+
+  <h3>Comments:</h3>
+  {% for comment in object.comment_set.all %}
+    <p>{{ comment.user }} said on {{ comment.pub_date }}:<br>{{ comment.text }}</p>
+  {% endfor %}
+
+  <h3>Add a comment:</h3>
+  
+  <form method="post" action="{% url 'add_comment_to_post' pk=object.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">For adding comment click HERE</button>
+  </form>
+{% endblock %}
+

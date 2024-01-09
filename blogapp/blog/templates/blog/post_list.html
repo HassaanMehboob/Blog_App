@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <head>
+    <style>
+      .pagination {
+        text-align: center;
+      }
+
+      .pagination-link {
+        display: inline-block;
+        padding: 8px 12px;
+        margin: 0 4px;
+        border: 1px solid #ccc;
+        background-color: #f7f7f7;
+        color: #333;
+        text-decoration: none;
+        border-radius: 4px;
+      }
+
+      .pagination-link:hover {
+        background-color: #ddd;
+      }
+    </style>
+  </head>
+
+  {% if user.is_authenticated %}
+    <h2>Blog Posts</h2>
+    <form method="get" action="{% url 'post_list' %}">
+      <input type="text" name="q" placeholder="Search">
+      <button type="submit">Search</button>
+    </form>
+    {% for post in page_obj %}
+      <div class="post">
+        <h3><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h3>
+        <p>{{ post.content|truncatewords:30 }}</p>
+        <p>Published on: {{ post.pub_date }}</p>
+        {% if post.image %}
+          <img src="{{ post.image.url }}" alt="{{ post.title }}">
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="pagination">
+    <span class="step-links">
+      {% if user.is_authenticated %}
+        {% if page_obj.has_previous %}
+          <a class="pagination-link" href="?page=1">&laquo; first</a>
+          <a class="pagination-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+  
+        <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+  
+        {% if page_obj.has_next %}
+          <a class="pagination-link" href="?page={{ page_obj.next_page_number }}">next</a>
+          <a class="pagination-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      {% endif %}
+    </span>
+  </div>
+{% endblock %}
